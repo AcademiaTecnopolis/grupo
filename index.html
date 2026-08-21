@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuevos Aires · Música latina desde Roquetas de Mar</title>
+<meta name="description" content="Grupo Nuevos Aires: versiones de son, cumbia, boleros, pop latino y swing, además de temas propios. Roquetas de Mar (Almería). Representantes de España en Cubadisco, La Habana.">
+
+<!-- ============================================================
+  GUÍA RÁPIDA PARA PERSONALIZAR ESTA PÁGINA
+  ------------------------------------------------------------
+  1. FOTOS: sustituye los archivos de /img (mismos nombres) por
+     tus fotos reales: hero.jpg (opcional, fondo del hero),
+     about.jpg, galeria-1.jpg ... galeria-6.jpg.
+     Todo el CSS y el JS están embebidos en este mismo archivo,
+     así que solo necesitas subir index.html + la carpeta img/.
+  2. VÍDEO/MÚSICA: sección "Sonidos" (id="sonidos"), cambia el
+     src de los <iframe> por tus enlaces reales de YouTube/Spotify.
+  3. AGENDA: busca "const CONCIERTOS" dentro de <script> y añade
+     vuestras fechas reales. Solo se muestran las 3 próximas; el
+     resto queda oculto tras el botón "Ver todas las fechas".
+  4. FORMULARIO: busca "FORMSPREE_ENDPOINT_AQUI" en el <form> y
+     sustitúyelo por tu endpoint real de https://formspree.io
+     (gratis, 2 minutos). Hasta entonces, el formulario detecta
+     que no está configurado y muestra automáticamente un aviso
+     con vías de contacto alternativas (Instagram/Facebook), en
+     vez de fallar en silencio.
+============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =======================================================
+   NUEVOS AIRES — Design tokens
+   Paleta "Modernismo Tropical" (Material Design 3, modo oscuro)
+   ======================================================= */
+:root{
+  --bg:               #121413;
+  --bg-alt:           #1a1c1b;
+  --bg-alt-2:         #1e201f;
+  --bg-elevated:      #282a29;
+  --bg-elevated-2:    #333534;
+
+  --primary:          #a0d1b8; /* verde esmeralda suave */
+  --on-primary:       #033826;
+  --primary-container: #043927;
+
+  --secondary:        #ffb59f; /* terracota suave */
+  --on-secondary:     #5e1600;
+  --secondary-container: #802a0d;
+
+  --tertiary:         #d3c4b1; /* arena cálida — titulares */
+  --on-tertiary:      #382f22;
+  --tertiary-container: #393022;
+
+  --on-surface:       #e2e3e0;
+  --on-surface-variant: #c0c9c2;
+  --outline:          #8a938d;
+  --outline-variant:  #414944;
+  --line:             rgba(211,196,177,0.15);
+  --line-strong:      rgba(211,196,177,0.28);
+
+  --font-display: 'Playfair Display', serif;
+  --font-body:    'Hanken Grotesk', sans-serif;
+
+  --container: 1180px;
+  --radius: 18px;
+  --radius-sm: 12px;
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+body{
+  margin:0;
+  background: var(--bg);
+  color: var(--on-surface);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a{ color: inherit; text-decoration: none; }
+img{ max-width: 100%; display:block; }
+ul,ol{ margin:0; padding:0; list-style:none; }
+button{ font-family: inherit; }
+
+.wrap{ width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+
+.grain{
+  position: fixed; inset:0; z-index: 1; pointer-events:none;
+  opacity: 0.04; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* glass panel (tomado de la referencia) */
+.glass-panel{
+  background: rgba(211,196,177,0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--line);
+}
+
+/* =======================================================
+   Type
+   ======================================================= */
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size: 12px; font-weight:700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--secondary);
+  margin: 0 0 14px;
+}
+.eyebrow-center{ justify-content:center; width:100%; }
+
+.h2{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.6vw, 2.8rem);
+  line-height: 1.12;
+  color: var(--tertiary);
+  margin: 0 0 18px;
+  letter-spacing: -0.01em;
+}
+.h2-center{ text-align:center; margin-left:auto; margin-right:auto; max-width: 22ch; }
+
+.lead{ font-size: clamp(1rem, 1.4vw, 1.1rem); color: var(--on-surface-variant); max-width: 54ch; }
+.lead-center{ margin: 0 auto 44px; text-align:center; }
+
+/* =======================================================
+   Buttons
+   ======================================================= */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding: 15px 30px; border-radius: 999px;
+  font-weight: 700; font-size: 0.85rem;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  border: 1.5px solid transparent; cursor:pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+}
+.btn:hover{ transform: translateY(-2px); }
+.btn-primary{
+  background: var(--secondary); color: var(--on-secondary);
+  box-shadow: 0 0 24px rgba(255,181,159,0.25);
+}
+.btn-primary:hover{ box-shadow: 0 0 34px rgba(255,181,159,0.45); }
+.btn-ghost{ border-color: var(--line-strong); color: var(--tertiary); background: transparent; }
+.btn-ghost:hover{ border-color: var(--tertiary); background: rgba(211,196,177,0.08); }
+.btn-block{ width:100%; }
+.btn-sm{ padding: 10px 20px; font-size: 0.72rem; }
+
+/* =======================================================
+   Header
+   ======================================================= */
+.site-header{
+  position: sticky; top:0; z-index: 50;
+  background: rgba(18,20,19,0.82);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner{ display:flex; align-items:center; justify-content:space-between; height: 74px; }
+.brand{ display:flex; align-items:center; gap:10px; }
+.brand-word{
+  font-family: var(--font-display); font-weight: 700; font-size: 1.2rem;
+  color: var(--tertiary); letter-spacing: -0.01em;
+}
+.main-nav{ display:none; align-items:center; gap: 30px; }
+.main-nav a{ font-size: 0.9rem; font-weight: 500; color: var(--on-surface-variant); transition: color .2s ease; }
+.main-nav a:hover{ color: var(--tertiary); }
+.nav-cta{
+  color: var(--on-secondary) !important; background: var(--secondary);
+  padding: 9px 20px; border-radius: 999px; font-weight: 700 !important;
+  font-size: 0.78rem !important; letter-spacing:0.06em; text-transform:uppercase;
+}
+.nav-cta:hover{ background: var(--tertiary); color: var(--on-tertiary) !important; }
+
+.nav-toggle{ display:flex; flex-direction:column; gap:5px; background:none; border:none; padding:8px; cursor:pointer; }
+.nav-toggle span{ width:22px; height:2px; background:var(--tertiary); border-radius:2px; transition: all .25s ease; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+@media (min-width: 900px){
+  .main-nav{ display:flex; }
+  .nav-toggle{ display:none; }
+}
+@media (max-width: 899px){
+  .main-nav{
+    position:absolute; top:74px; left:0; right:0; background: var(--bg-alt);
+    border-bottom: 1px solid var(--line);
+    flex-direction:column; align-items:flex-start; gap:0;
+    max-height:0; overflow:hidden; transition: max-height .3s ease;
+  }
+  .main-nav.open{ max-height: 420px; }
+  .main-nav a{ width:100%; padding: 16px 24px; border-bottom: 1px solid var(--line); }
+  .nav-cta{ margin: 14px 24px; text-align:center; }
+}
+
+/* =======================================================
+   Hero — foto a sangre + blobs orgánicos + titular centrado
+   ======================================================= */
+.hero{
+  position: relative; z-index: 2; overflow: hidden;
+  min-height: 88vh; display:flex; align-items:center; justify-content:center;
+  padding: 120px 0 90px;
+}
+/* -----------------------------------------------------
+   AJUSTA AQUÍ LA VISIBILIDAD DE LA FOTO DEL HERO
+   --hero-photo-opacity: 0 = invisible, 1 = foto a plena intensidad.
+   --hero-scrim-*: oscurecen la foto para que el texto se lea bien.
+     Baja estos valores (o ponlos en 0) para que se vea más color;
+     súbelos si el titular pierde legibilidad.
+----------------------------------------------------- */
+:root{
+  --hero-photo-opacity: 1;
+  --hero-scrim-mid: 0.35;   /* oscurecido a media altura */
+  --hero-scrim-top: 0.05;   /* oscurecido en la parte superior */
+}
+.hero-bg{
+  position:absolute; inset:0; z-index:0;
+  background-image: url('img/hero.jpg');
+  background-size: cover; background-position: center;
+  opacity: var(--hero-photo-opacity);
+}
+.hero-bg.img-fallback{ opacity: 0; }
+.hero-scrim{
+  position:absolute; inset:0; z-index:1;
+  background: linear-gradient(to top,
+    var(--bg) 0%,
+    rgba(18,20,19,var(--hero-scrim-mid)) 55%,
+    rgba(18,20,19,var(--hero-scrim-top)) 100%);
+}
+.blob{ position:absolute; z-index:1; border-radius:50%; filter: blur(70px); pointer-events:none; mix-blend-mode: screen; }
+.blob-1{
+  width: 55vw; height: 55vw; top: -18%; left: -12%;
+  background: radial-gradient(circle, rgba(255,181,159,0.18) 0%, rgba(255,181,159,0) 70%);
+  animation: pulse 10s infinite alternate;
+}
+.blob-2{
+  width: 46vw; height: 46vw; bottom: -10%; right: -12%;
+  background: radial-gradient(circle, rgba(160,209,184,0.18) 0%, rgba(160,209,184,0) 70%);
+  animation: floaty 15s infinite ease-in-out;
+}
+@keyframes pulse{ 0%{ transform: scale(1); opacity:.5; } 100%{ transform: scale(1.2); opacity:.85; } }
+@keyframes floaty{ 0%,100%{ transform: translateY(0) rotate(0deg); } 50%{ transform: translateY(-26px) rotate(8deg); } }
+
+.hero-inner{ position:relative; z-index:2; text-align:center; max-width: 780px; margin: 0 auto; }
+.hero-eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size: 0.72rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase;
+  color: var(--tertiary); background: rgba(211,196,177,0.08);
+  border: 1px solid var(--line-strong); padding: 8px 18px; border-radius:999px;
+  margin-bottom: 26px;
+}
+.hero-title{
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(2.6rem, 8vw, 4.6rem);
+  line-height: 1.05; color: var(--tertiary);
+  letter-spacing: -0.01em; margin: 0 0 22px;
+}
+.hero-title em{
+  font-style: italic; font-weight:600;
+  background: linear-gradient(100deg, var(--secondary), var(--primary));
+  -webkit-background-clip: text; background-clip:text; color:transparent;
+}
+.hero-tagline{
+  font-size: clamp(1.02rem, 1.8vw, 1.2rem);
+  color: var(--on-surface-variant); max-width: 46ch; margin: 0 auto 34px;
+}
+.hero-ctas{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+
+.scroll-cue{ display:flex; justify-content:center; margin-top: 56px; position:relative; z-index:2; }
+.scroll-cue span{
+  width: 1px; height: 46px; background: linear-gradient(var(--secondary), transparent);
+  animation: scrollcue 2s ease-in-out infinite;
+}
+@keyframes scrollcue{ 0%,100%{ opacity: 0.3; } 50%{ opacity: 1; } }
+
+/* =======================================================
+   Ticker
+   ======================================================= */
+.ticker{
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  background: var(--bg-alt); overflow:hidden; padding: 14px 0; position: relative; z-index: 2;
+}
+.ticker-track{
+  display:flex; width: max-content; gap: 14px;
+  font-size: 0.8rem; font-weight:600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--on-surface-variant); animation: ticker 38s linear infinite; white-space: nowrap;
+}
+.ticker .dot{ color: var(--secondary); }
+@keyframes ticker{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+
+/* =======================================================
+   Sections generic
+   ======================================================= */
+.section{ padding: 88px 0; position: relative; z-index: 2; }
+.section-alt{ background: var(--bg-alt); }
+
+/* Sobre nosotros */
+.sobre-grid{ display:grid; gap: 46px; grid-template-columns: 1fr; }
+/* -----------------------------------------------------
+   AJUSTA AQUÍ EL EFECTO DE FOCO DE LA FOTO "SOBRE NOSOTROS"
+   Truco: se apilan dos copias de la misma foto —una desenfocada
+   de fondo y otra nítida encima— y la de arriba se recorta con
+   un degradado radial para que solo el centro quede nítido; el
+   resto se desvanece dejando ver la versión borrosa de detrás.
+   Encima va una viñeta oscura para reforzar el efecto "velado".
+
+   --photo-focus-size : hasta dónde llega nítido el centro (más
+                         alto = zona nítida más grande)
+   --photo-fade-size   : dónde termina el desvanecido hacia el
+                         borde (debe ser mayor que focus-size)
+   --photo-edge-blur   : intensidad del desenfoque en los bordes
+   --photo-vignette-opacity : oscurecido de la viñeta en el borde
+----------------------------------------------------- */
+:root{
+  --photo-focus-size: 32%;
+  --photo-fade-size: 99%;
+  --photo-edge-blur: 18px;
+  --photo-vignette-opacity: 0.9;
+}
+.sobre-photo{ position:relative; }
+.about-photo-frame{
+  position:relative; overflow:hidden;
+  width:100%; aspect-ratio: 4/5;
+  border-radius: var(--radius); border: 1px solid var(--line-strong);
+}
+.about-photo-frame img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+}
+.about-photo-blur{
+  filter: blur(var(--photo-edge-blur));
+  transform: scale(1.1); /* evita ver el borde nítido del blur */
+}
+.about-photo-sharp{
+  -webkit-mask-image: radial-gradient(ellipse at center, black var(--photo-focus-size), transparent var(--photo-fade-size));
+          mask-image: radial-gradient(ellipse at center, black var(--photo-focus-size), transparent var(--photo-fade-size));
+}
+.about-photo-vignette{
+  position:absolute; inset:0; pointer-events:none;
+  background: radial-gradient(ellipse at center, transparent var(--photo-focus-size), rgba(18,20,19,var(--photo-vignette-opacity)) 100%);
+}
+.about-photo-frame img.img-fallback{ opacity:0; }
+.about-photo-frame.img-fallback{ background: linear-gradient(135deg, var(--secondary-container), var(--bg-elevated)); }
+.photo-caption{
+  position:absolute; bottom:16px; left:16px; font-size:0.72rem; font-weight:600; letter-spacing:0.03em;
+  background: rgba(18,20,19,0.85); border: 1px solid var(--line-strong);
+  padding: 7px 12px; border-radius: 999px; color: var(--tertiary);
+}
+.sobre-text p{ color: var(--on-surface-variant); }
+.sobre-text p.lead{ color: var(--on-surface); }
+
+.stat-row{
+  display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 36px;
+  border-top: 1px solid var(--line); padding-top: 30px;
+}
+.stat{ display:flex; flex-direction:column; gap:6px; }
+.stat-num{ font-family: var(--font-display); font-weight:700; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--secondary); }
+.stat-label{ font-size: 0.78rem; color: var(--on-surface-variant); line-height:1.35; }
+
+@media (min-width: 860px){ .sobre-grid{ grid-template-columns: 0.85fr 1.15fr; align-items:center; } }
+
+/* Hitos (antes "Trayectoria") — tarjetas compactas */
+.hitos-grid{
+  display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+  max-width: 900px; margin: 0 auto;
+}
+.hito-card{
+  padding: 20px; border-radius: var(--radius-sm);
+  display:flex; flex-direction:column; gap:10px;
+}
+.hito-icon{
+  width:36px; height:36px; border-radius:999px;
+  background: var(--tertiary-container); color: var(--tertiary);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.hito-year{ font-weight:700; font-size:0.78rem; letter-spacing:0.04em; text-transform:uppercase; color: var(--secondary); }
+.hito-card p{ margin:0; font-size:0.9rem; color: var(--on-surface-variant); line-height:1.4; }
+.hito-card.highlight{ border-color: rgba(255,181,159,0.4); }
+.hito-card.highlight .hito-icon{ background: var(--secondary-container); color: var(--secondary); }
+.hito-card.highlight .hito-year{ color: var(--tertiary); }
+
+@media (min-width: 760px){ .hitos-grid{ grid-template-columns: repeat(4, 1fr); } }
+
+/* Sonidos */
+.media-grid{ display:grid; gap: 24px; grid-template-columns: 1fr; }
+.media-label{ font-size: 0.76rem; font-weight:700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--secondary); margin: 0 0 12px; }
+.media-frame{
+  border-radius: var(--radius); overflow:hidden; border: 1px solid var(--line-strong);
+  aspect-ratio: 16/9; background: var(--bg-elevated);
+}
+.media-frame iframe{ width:100%; height:100%; border:0; }
+.media-frame-audio{ aspect-ratio: 16/10; }
+.media-placeholder{
+  width:100%; height:100%; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center; gap:10px;
+  padding: 24px; border: 1px dashed var(--line-strong); border-radius: var(--radius-sm);
+  color: var(--on-surface-variant); box-sizing: border-box;
+}
+.media-placeholder svg{ color: var(--tertiary); }
+.media-placeholder p{ margin:0; font-weight:700; color: var(--tertiary); }
+.media-placeholder span{ font-size: 0.8rem; max-width: 32ch; }
+@media (min-width: 860px){ .media-grid{ grid-template-columns: 1fr 1fr; } }
+
+/* Galería — grid en escritorio, carrusel con scroll-snap en móvil */
+.gallery-hint{
+  display:flex; align-items:center; gap:6px; justify-content:center;
+  font-size: 0.76rem; color: var(--on-surface-variant); margin-bottom: 18px;
+}
+.gallery-carousel{
+  display:flex; gap: 14px; overflow-x:auto; scroll-snap-type: x mandatory;
+  padding-bottom: 6px; margin: 0 -24px; padding-left:24px; padding-right:24px;
+  -webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+.gallery-carousel::-webkit-scrollbar{ display:none; }
+.gallery-carousel .gallery-item{
+  scroll-snap-align: center; flex: 0 0 82%; aspect-ratio: 4/3;
+}
+.gallery-dots{ display:flex; justify-content:center; gap:8px; margin-top: 16px; }
+.gallery-dots span{
+  width:6px; height:6px; border-radius:999px; background: var(--line-strong);
+  transition: background .2s ease, transform .2s ease;
+}
+.gallery-dots span.active{ background: var(--secondary); transform: scale(1.4); }
+
+.gallery-item{
+  margin:0; border-radius: var(--radius-sm); overflow:hidden;
+  border: 1px solid var(--line); background: linear-gradient(135deg, var(--secondary-container), var(--bg-elevated));
+}
+.gallery-item img{ width:100%; height:100%; object-fit:cover; }
+.gallery-item.img-fallback img{ opacity: 0; }
+
+@media (min-width: 700px){
+  .gallery-hint{ display:none; }
+  .gallery-dots{ display:none; }
+  .gallery-carousel{
+    display:grid; grid-template-columns: repeat(4, 1fr); overflow:visible; margin:0; padding:0;
+  }
+  .gallery-carousel .gallery-item{ flex:initial; aspect-ratio: 1/1; }
+  .gallery-carousel .gallery-item.span-2{ grid-column: span 2; aspect-ratio: 1/1; }
+}
+
+/* Agenda — filas compactas + expandir */
+.agenda-list{ display:flex; flex-direction:column; gap:10px; max-width: 720px; margin: 0 auto; }
+.agenda-row{
+  display:flex; align-items:center; gap: 16px; padding: 14px 18px;
+  border-radius: var(--radius-sm); border: 1px solid var(--line-strong); background: var(--bg-alt);
+}
+.agenda-chip{
+  font-weight:700; text-align:center; background: var(--tertiary); color: var(--on-tertiary);
+  border-radius: 8px; padding: 6px 10px; flex-shrink:0; min-width: 54px; line-height:1.1;
+}
+.agenda-chip .d{ display:block; font-size: 1rem; }
+.agenda-chip .m{ display:block; font-size: 0.6rem; letter-spacing:0.05em; text-transform:uppercase; }
+.agenda-row-info{ flex:1; min-width:0; }
+.agenda-row-info h3{ font-family: var(--font-display); font-size:1rem; margin:0; color: var(--tertiary); }
+.agenda-row-info p{ margin:2px 0 0; color: var(--on-surface-variant); font-size:0.82rem; }
+.agenda-row.hidden-item{ display:none; }
+.agenda-empty{
+  text-align:center; padding: 38px 20px; border: 1px dashed var(--line-strong);
+  border-radius: var(--radius); color: var(--on-surface-variant);
+}
+.agenda-toggle{
+  display:block; margin: 18px auto 0; background:none; border: 1px solid var(--line-strong);
+  color: var(--tertiary); padding: 10px 22px; border-radius:999px; font-size:0.78rem;
+  font-weight:700; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer;
+  transition: border-color .2s ease, color .2s ease;
+}
+.agenda-toggle:hover{ border-color: var(--tertiary); }
+.agenda-cta{ text-align:center; margin-top: 34px; color: var(--on-surface-variant); }
+.agenda-cta a{ color: var(--secondary); font-weight:700; }
+
+/* Contacto */
+.section-contact{ background: var(--bg-alt); }
+.contact-grid{ display:grid; gap: 46px; grid-template-columns: 1fr; }
+.contact-list{ display:flex; flex-direction:column; gap:14px; margin: 26px 0; }
+.contact-list li{ display:flex; align-items:center; gap:12px; color: var(--on-surface-variant); }
+.contact-list svg{ color: var(--secondary); flex-shrink:0; }
+.social-row{ display:flex; gap:12px; }
+.social-row a{
+  width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+  border: 1px solid var(--line-strong); border-radius:999px; color: var(--on-surface-variant);
+  transition: border-color .2s ease, color .2s ease;
+}
+.social-row a:hover{ border-color: var(--tertiary); color: var(--tertiary); }
+
+.contact-form{
+  border-radius: var(--radius); padding: 30px;
+  display:flex; flex-direction:column; gap:20px;
+}
+.field{ display:flex; flex-direction:column; gap:8px; }
+.field label{ font-size:0.82rem; color: var(--on-surface-variant); }
+.field input, .field select, .field textarea{
+  font-family: var(--font-body); font-size: 1rem; color: var(--on-surface);
+  background: var(--bg-elevated); border: 1px solid var(--line-strong);
+  border-radius: 10px; padding: 12px 14px; outline: none; transition: border-color .2s ease;
+}
+.field input:focus, .field select:focus, .field textarea:focus{ border-color: var(--secondary); }
+.form-note{ font-size: 0.78rem; color: var(--on-surface-variant); margin:0; }
+.form-status{
+  display:none; padding: 14px 16px; border-radius: 10px; font-size: 0.86rem; line-height:1.5;
+}
+.form-status.show{ display:block; }
+.form-status.ok{ background: rgba(160,209,184,0.12); border: 1px solid rgba(160,209,184,0.4); color: var(--primary); }
+.form-status.fallback{ background: rgba(255,181,159,0.1); border: 1px solid rgba(255,181,159,0.35); color: var(--tertiary); }
+.form-status a{ color: var(--secondary); font-weight:700; }
+
+@media (min-width: 900px){ .contact-grid{ grid-template-columns: 1fr 1fr; align-items:start; } }
+
+/* =======================================================
+   Footer
+   ======================================================= */
+.site-footer{ background: #0d0f0e; border-top: 1px solid var(--line); position:relative; z-index:2; }
+.footer-inner{ display:flex; flex-direction:column; gap: 28px; padding: 56px 24px 30px; align-items:flex-start; }
+.footer-brand p{ color: var(--on-surface-variant); font-size:0.85rem; margin: 8px 0 0; }
+.footer-nav{ display:flex; flex-wrap:wrap; gap: 18px; }
+.footer-nav a{ font-size:0.88rem; color: var(--on-surface-variant); }
+.footer-nav a:hover{ color: var(--tertiary); }
+.footer-bottom{ border-top: 1px solid var(--line); padding: 18px 24px 30px; font-size: 0.78rem; color: var(--on-surface-variant); }
+@media (min-width: 760px){ .footer-inner{ flex-direction:row; align-items:center; justify-content:space-between; } }
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+  outline: 2px solid var(--secondary); outline-offset: 3px;
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="top">
+  <div class="wrap header-inner">
+    <a href="#top" class="brand" aria-label="Nuevos Aires — inicio">
+      <img src="img/logo.jpg" alt="" width="25">
+      <span class="brand-word">Nuevos&nbsp;Aires</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Navegación principal">
+      <a href="#sobre">Sobre&nbsp;nosotros</a>
+      <a href="#hitos">Hitos</a>
+      <a href="#sonidos">Sonidos</a>
+      <a href="#galeria">Galería</a>
+      <a href="#agenda">Agenda</a>
+      <a href="#contacto" class="nav-cta">Contratar</a>
+    </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="main-nav" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-scrim"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="wrap hero-inner">
+    <p class="hero-eyebrow">Roquetas de Mar · Almería</p>
+    <h1 class="hero-title">Nuevos Aires: <em>el latido</em><br>de la música latina</h1>
+    <p class="hero-tagline">Son, cumbia y la elegancia del bolero, con la energía del pop
+      latino y el swing — y nuestros propios temas.</p>
+    <div class="hero-ctas">
+      <a href="#contacto" class="btn btn-primary">Contratar ahora</a>
+      <a href="#sonidos" class="btn btn-ghost">Escuchar</a>
+    </div>
+  </div>
+
+  <div class="scroll-cue" aria-hidden="true"><span></span></div>
+</section>
+
+<!-- ============ TICKER ============ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Trío Matamoros</span><span class="dot">•</span>
+    <span>Benny Moré</span><span class="dot">•</span>
+    <span>Los Panchos</span><span class="dot">•</span>
+    <span>Juan Luis Guerra</span><span class="dot">•</span>
+    <span>Juanes</span><span class="dot">•</span>
+    <span>El Kanka</span><span class="dot">•</span>
+    <span>Natalia Lafourcade</span><span class="dot">•</span>
+    <span>Guaguancó</span><span class="dot">•</span>
+    <span>Bossa nova</span><span class="dot">•</span>
+    <span>Bachata</span><span class="dot">•</span>
+    <span>Trío Matamoros</span><span class="dot">•</span>
+    <span>Benny Moré</span><span class="dot">•</span>
+    <span>Los Panchos</span><span class="dot">•</span>
+    <span>Juan Luis Guerra</span><span class="dot">•</span>
+    <span>Juanes</span><span class="dot">•</span>
+    <span>El Kanka</span><span class="dot">•</span>
+    <span>Natalia Lafourcade</span><span class="dot">•</span>
+    <span>Guaguancó</span><span class="dot">•</span>
+    <span>Bossa nova</span><span class="dot">•</span>
+    <span>Bachata</span><span class="dot">•</span>
+  </div>
+</div>
+
+<!-- ============ SOBRE NOSOTROS ============ -->
+<section class="section" id="sobre">
+  <div class="wrap sobre-grid">
+    <div class="sobre-photo">
+      <div class="about-photo-frame" id="aboutPhotoFrame">
+        <img class="about-photo-blur" src="img/about.jpg" alt="" aria-hidden="true" onerror="document.getElementById('aboutPhotoFrame').classList.add('img-fallback')">
+        <img class="about-photo-sharp" src="img/about.jpg" alt="Músico de Nuevos Aires tocando el trombón en directo">
+        <div class="about-photo-vignette" aria-hidden="true"></div>
+      </div>
+      <span class="photo-caption">Nuevos Aires en directo</span>
+    </div>
+    <div class="sobre-text">
+      <p class="eyebrow">Desde 2018</p>
+      <h2 class="h2">Un conjunto,<br>mil orígenes.</h2>
+      <p class="lead">
+        Nacimos en Roquetas de Mar cuando músicos profesionales y aficionados,
+        de procedencias y estilos muy distintos, decidieron juntar sus voces
+        e instrumentos bajo un mismo proyecto.
+      </p>
+      <p>
+        Desde entonces recorremos la música latina de punta a punta: del son
+        cubano más clásico y el bolero de toda la vida —Trío Matamoros, Benny
+        Moré, Los Panchos— a la cumbia, la bachata, el swing y los éxitos de
+        autores actuales como Juanes, Juan Luis Guerra o Natalia Lafourcade.
+        Un formato vocal-instrumental, a la manera de los conjuntos
+        tradicionales cubanos, que en directo despliega fuerza y dinamismo.
+        Y, cada vez más, nuestros propios temas.
+      </p>
+
+      <div class="stat-row">
+        <div class="stat">
+          <span class="stat-num">2018</span>
+          <span class="stat-label">Fundación en<br>Roquetas de Mar</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">5+</span>
+          <span class="stat-label">Estilos: son, bolero,<br>cumbia, pop, swing</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">2025</span>
+          <span class="stat-label">Cubadisco,<br>La Habana</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HITOS (antes "Trayectoria") ============ -->
+<section class="section section-alt" id="hitos">
+  <div class="wrap">
+    <p class="eyebrow eyebrow-center">Trayectoria</p>
+    <h2 class="h2 h2-center">Hitos del camino</h2>
+
+    <div class="hitos-grid">
+      <div class="hito-card glass-panel">
+        <span class="hito-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </span>
+        <span class="hito-year">2018</span>
+        <p>Nace Nuevos Aires en Roquetas de Mar.</p>
+      </div>
+      <div class="hito-card glass-panel">
+        <span class="hito-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+        </span>
+        <span class="hito-year">Cada otoño</span>
+        <p>Organizamos la Noche de la Música Latina en Almería.</p>
+      </div>
+      <div class="hito-card glass-panel">
+        <span class="hito-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18Z"/></svg>
+        </span>
+        <span class="hito-year">Cada verano</span>
+        <p>Impulsamos el Musimundo Enix Festival.</p>
+      </div>
+      <div class="hito-card glass-panel highlight">
+        <span class="hito-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 9 9l-7 1 5 5-1.5 7L12 18l6.5 4L17 15l5-5-7-1-3-7Z"/></svg>
+        </span>
+        <span class="hito-year">2025</span>
+        <p>Representamos a España en Cubadisco, La Habana.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SONIDOS ============ -->
+<section class="section" id="sonidos">
+  <div class="wrap">
+    <p class="eyebrow eyebrow-center">Escúchanos</p>
+    <h2 class="h2 h2-center">Sonidos de Nuevos Aires</h2>
+    <p class="lead lead-center">
+      Un adelanto de lo que suena en nuestros directos. Sustituye estos
+      reproductores por tus enlaces reales de YouTube y Spotify.
+    </p>
+
+    <div class="media-grid">
+      <div class="media-card">
+        <p class="media-label">▶ Vídeo en directo</p>
+        <div class="media-frame">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/WfuObA-PB5g?si=MqxZeo1Wlm9GaxFb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        
+        </div>
+      </div>
+      <div class="media-card">
+        <p class="media-label">♫ Escúchanos en Spotify</p>
+        <div class="media-frame media-frame-audio">
+          <div class="media-placeholder">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 15c2.5-1 5.5-1 8 0M7.5 12c3-1.2 6-1.2 9 0M7 9c3.5-1.3 6.5-1.3 10 0"/></svg>
+            <p>Spotify pendiente de añadir</p>
+            <span>Sustituye este bloque por vuestro reproductor real (instrucciones abajo en el código)</span>
+          </div>
+          <!--
+            CÓMO AÑADIR VUESTRO SPOTIFY REAL:
+            1. Abre vuestro perfil de artista, álbum o canción en Spotify.
+            2. Botón "..." -> "Compartir" -> "Insertar canción/álbum/artista"
+               -> copia esa URL (formato https://open.spotify.com/embed/...).
+            3. Borra el <div class="media-placeholder">...</div> de arriba.
+            4. Descomenta el siguiente <iframe> y pega tu URL en el src:
+
+          <iframe
+            src="https://open.spotify.com/embed/artist/XXXXXXXXXXXXXXXXXXXXXX"
+            title="Spotify de Nuevos Aires"
+            loading="lazy"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERÍA ============ -->
+<section class="section section-alt" id="galeria">
+  <div class="wrap">
+    <p class="eyebrow eyebrow-center">Galería</p>
+    <h2 class="h2 h2-center">Momentos en directo</h2>
+    <p class="gallery-hint">← Desliza para ver más →</p>
+
+    <div class="gallery-carousel" id="galleryCarousel">
+      <figure class="gallery-item span-2"><img src="img/img1.jpg" alt="Nuevos Aires en concierto" loading="lazy" onerror="this.parentElement.classList.add('img-fallback')"></figure>
+      <figure class="gallery-item"><img src="img/img2.jpg" alt="Público disfrutando de un concierto de Nuevos Aires" loading="lazy" onerror="this.parentElement.classList.add('img-fallback')"></figure>
+      <figure class="gallery-item"><img src="img/img3.jpg" alt="Instrumentos de Nuevos Aires" loading="lazy" onerror="this.parentElement.classList.add('img-fallback')"></figure>
+      <figure class="gallery-item"><img src="img/img4.jpg" alt="Nuevos Aires en el Musimundo Enix Festival" loading="lazy" onerror="this.parentElement.classList.add('img-fallback')"></figure>
+      <figure class="gallery-item span-2"><img src="img/img5.jpg" alt="Nuevos Aires en La Noche de la Música Latina" loading="lazy" onerror="this.parentElement.classList.add('img-fallback')"></figure>
+      <figure class="gallery-item"><img src="img/img6.jpg" alt="Nuevos Aires en Cubadisco, La Habana" loading="lazy" onerror="this.parentElement.classList.add('img-fallback')"></figure>
+    </div>
+    <div class="gallery-dots" id="galleryDots" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- ============ AGENDA ============ -->
+<section class="section" id="agenda">
+  <div class="wrap">
+    <p class="eyebrow eyebrow-center">Agenda</p>
+    <h2 class="h2 h2-center">Próximas actuaciones</h2>
+
+    <div id="agendaList" class="agenda-list">
+      <!-- Generado automáticamente a partir del array CONCIERTOS -->
+    </div>
+    <button id="agendaToggle" class="agenda-toggle" type="button" hidden>Ver todas las fechas</button>
+
+    <p class="agenda-cta">
+      ¿Organizas un evento y quieres contar con nosotros?
+      <a href="#contacto">Escríbenos aquí →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ============ CONTACTO ============ -->
+<section class="section section-contact" id="contacto">
+  <div class="wrap contact-grid">
+    <div class="contact-intro">
+      <p class="eyebrow">Contratación</p>
+      <h2 class="h2">Llevemos la música<br>a tu evento</h2>
+      <p class="lead">
+        Bodas, fiestas patronales, teatros, festivales... Cuéntanos qué
+        estás organizando y te respondemos con disponibilidad y repertorio.
+      </p>
+
+      <ul class="contact-list">
+        <li>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Roquetas de Mar, Almería (España)
+        </li>
+        <li>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          Respondemos también por Instagram y Facebook
+        </li>
+      </ul>
+
+      <div class="social-row">
+        <a href="https://www.instagram.com/nuevosairesgrupo/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.facebook.com/AiresGrupo/" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8h-2a2 2 0 0 0-2 2v10M8 13h5"/><path d="M15 3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h9a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3Z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/results?search_query=grupo+nuevos+aires+roquetas" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.5 9.5 15 12l-4.5 2.5Z" fill="currentColor" stroke="none"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <form class="contact-form glass-panel" id="contacto-form" action="https://formspree.io/f/FORMSPREE_ENDPOINT_AQUI" method="POST">
+      <div class="field">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="tipo">Tipo de evento</label>
+        <select id="tipo" name="tipo">
+          <option>Boda</option>
+          <option>Fiesta patronal / municipal</option>
+          <option>Teatro / auditorio</option>
+          <option>Festival</option>
+          <option>Evento privado</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="mensaje">Cuéntanos sobre tu evento</label>
+        <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" id="formSubmitBtn">Enviar mensaje</button>
+      <div class="form-status" id="formStatus"></div>
+      <p class="form-note">Al enviar este formulario aceptas que usemos tus datos únicamente para responder a tu solicitud.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <span class="brand-word">Nuevos&nbsp;Aires</span>
+      <p>Asociación Cultural Grupo Musical Nuevos Aires<br>Roquetas de Mar, Almería</p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Navegación de pie de página">
+      <a href="#sobre">Sobre nosotros</a>
+      <a href="#hitos">Hitos</a>
+      <a href="#sonidos">Sonidos</a>
+      <a href="#galeria">Galería</a>
+      <a href="#agenda">Agenda</a>
+      <a href="#contacto">Contratar</a>
+    </nav>
+
+    <div class="social-row">
+      <a href="https://www.instagram.com/nuevosairesgrupo/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/AiresGrupo/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8h-2a2 2 0 0 0-2 2v10M8 13h5"/><path d="M15 3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h9a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3Z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <p>© <span id="year"></span> Academia Tecnópolis. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+/* ---------------------------------------------------------
+   AGENDA: añade aquí vuestras próximas fechas confirmadas.
+   Formato: { dia:"09", mes:"AGO", titulo:"...", lugar:"..." }
+   Solo se muestran las 3 primeras; el resto se oculta tras el
+   botón "Ver todas las fechas" (aparece automáticamente si hay
+   más de 3). Si el array está vacío se muestra un mensaje
+   invitando a seguir las redes sociales.
+--------------------------------------------------------- */
+const CONCIERTOS = [
+  // Ejemplo — descomenta y edita, o añade los vuestros:
+   { dia:"20", mes:"SEP", titulo:"Noche de la Música Latina", lugar:"Teatro Apolo, Almería" },
+   { dia:"07", mes:"AGO", titulo:"Musimundo Enix Festival", lugar:"Plaza de la Constitución, Enix" },
+   { dia:"20", mes:"SEP", titulo:"Noche de la Música Latina", lugar:"Teatro Apolo, Almería" },
+   { dia:"07", mes:"AGO", titulo:"Musimundo Enix Festival", lugar:"Plaza de la Constitución, Enix" },
+   { dia:"20", mes:"SEP", titulo:"Noche de la Música Latina", lugar:"Teatro Apolo, Almería" },
+   { dia:"07", mes:"AGO", titulo:"Musimundo Enix Festival", lugar:"Plaza de la Constitución, Enix" },
+];
+const AGENDA_VISIBLE_LIMIT = 3;
+
+function renderAgenda(){
+  const cont = document.getElementById('agendaList');
+  const toggle = document.getElementById('agendaToggle');
+  if (!cont) return;
+
+  if (!CONCIERTOS.length){
+    cont.innerHTML = `<div class="agenda-empty"><p>Aún no hay fechas confirmadas por aquí.<br>
+      Síguenos en redes para ser el primero en enterarte.</p></div>`;
+    toggle.hidden = true;
+    return;
+  }
+
+  cont.innerHTML = CONCIERTOS.map((c, i) => `
+    <div class="agenda-row ${i >= AGENDA_VISIBLE_LIMIT ? 'hidden-item' : ''}">
+      <div class="agenda-chip"><span class="d">${c.dia}</span><span class="m">${c.mes}</span></div>
+      <div class="agenda-row-info"><h3>${c.titulo}</h3><p>${c.lugar}</p></div>
+    </div>
+  `).join('');
+
+  if (CONCIERTOS.length > AGENDA_VISIBLE_LIMIT){
+    toggle.hidden = false;
+    toggle.textContent = `Ver todas las fechas (${CONCIERTOS.length})`;
+    toggle.setAttribute('aria-expanded', 'false');
+
+    toggle.addEventListener('click', () => {
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      const items = cont.querySelectorAll('.agenda-row');
+
+      if (!isExpanded){
+        // Desplegar: mostrar todas las fechas
+        items.forEach(el => el.classList.remove('hidden-item'));
+        toggle.textContent = 'Contraer';
+        toggle.setAttribute('aria-expanded', 'true');
+      } else {
+        // Contraer: volver a mostrar solo las 3 primeras
+        items.forEach((el, i) => el.classList.toggle('hidden-item', i >= AGENDA_VISIBLE_LIMIT));
+        toggle.textContent = `Ver todas las fechas (${CONCIERTOS.length})`;
+        toggle.setAttribute('aria-expanded', 'false');
+        // Vuelve a llevar la vista a la sección para no dejar al usuario
+        // desplazado sobre contenido que ya no está a la vista
+        document.getElementById('agenda').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  } else {
+    toggle.hidden = true;
+  }
+}
+
+/* Menú móvil */
+function initNav(){
+  const toggle = document.getElementById('navToggle');
+  const nav = document.getElementById('main-nav');
+  if (!toggle || !nav) return;
+  toggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+/* Fondo del hero: si no existe img/hero.jpg, se oculta sin romper el diseño */
+function initHeroBg(){
+  const el = document.getElementById('heroBg');
+  if (!el) return;
+  const test = new Image();
+  test.onload = () => {};
+  test.onerror = () => el.classList.add('img-fallback');
+  test.src = 'img/hero.jpg';
+}
+
+/* Carrusel de galería: puntos indicadores en móvil */
+function initGalleryDots(){
+  const carousel = document.getElementById('galleryCarousel');
+  const dotsWrap = document.getElementById('galleryDots');
+  if (!carousel || !dotsWrap) return;
+  const items = carousel.querySelectorAll('.gallery-item');
+  dotsWrap.innerHTML = Array.from(items).map((_, i) => `<span${i===0 ? ' class="active"' : ''}></span>`).join('');
+  const dots = dotsWrap.querySelectorAll('span');
+
+  let ticking = false;
+  carousel.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const idx = Math.round(carousel.scrollLeft / (carousel.scrollWidth / items.length));
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      ticking = false;
+    });
+  });
+}
+
+/* Formulario de contacto: Formspree con AJAX + aviso si no está configurado */
+function initContactForm(){
+  const form = document.getElementById('contacto-form');
+  const status = document.getElementById('formStatus');
+  const btn = document.getElementById('formSubmitBtn');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const action = form.getAttribute('action') || '';
+    const notConfigured = action.includes('FORMSPREE_ENDPOINT_AQUI');
+
+    if (notConfigured){
+      status.className = 'form-status fallback show';
+      status.innerHTML = `El formulario todavía no está conectado a un buzón de correo.
+        Mientras lo configuramos, escríbenos directamente por
+        <a href="https://www.instagram.com/nuevosairesgrupo/" target="_blank" rel="noopener">Instagram</a>
+        o <a href="https://www.facebook.com/AiresGrupo/" target="_blank" rel="noopener">Facebook</a>.`;
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    try{
+      const res = await fetch(action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok){
+        status.className = 'form-status ok show';
+        status.textContent = '¡Mensaje enviado! Te responderemos lo antes posible.';
+        form.reset();
+      } else {
+        throw new Error('Respuesta no OK');
+      }
+    } catch (err){
+      status.className = 'form-status fallback show';
+      status.innerHTML = `No hemos podido enviar el mensaje. Escríbenos mejor por
+        <a href="https://www.instagram.com/nuevosairesgrupo/" target="_blank" rel="noopener">Instagram</a>
+        o <a href="https://www.facebook.com/AiresGrupo/" target="_blank" rel="noopener">Facebook</a>.`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enviar mensaje';
+    }
+  });
+}
+
+function initYear(){
+  const el = document.getElementById('year');
+  if (el) el.textContent = new Date().getFullYear();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderAgenda();
+  initNav();
+  initHeroBg();
+  initGalleryDots();
+  initContactForm();
+  initYear();
+});
+</script>
+</body>
+</html>
